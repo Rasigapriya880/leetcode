@@ -3,20 +3,22 @@ class Solution {
         if (head == null || head.next == null) return true;
 
         ListNode slow = head, fast = head;
+
+        // Find middle (end of first half)
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
 
-        ListNode head2 = reverse(slow);
-        ListNode cur1 = head, cur2 = head2;
+        // Reverse second half
+        ListNode secondHalf = reverse(slow);
 
-        while (cur2 != null) {
-            if (cur1.val != cur2.val) {
-                return false;
-            }
-            cur1 = cur1.next;
-            cur2 = cur2.next;
+        // Compare both halves
+        ListNode first = head, second = secondHalf;
+        while (second != null) {
+            if (first.val != second.val) return false;
+            first = first.next;
+            second = second.next;
         }
 
         return true;
@@ -24,13 +26,12 @@ class Solution {
 
     private ListNode reverse(ListNode head) {
         ListNode prev = null;
-        ListNode curr = head;
-        while (curr != null) {
-            ListNode next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
         }
         return prev;
     }
-} 
+}
